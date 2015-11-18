@@ -50,7 +50,8 @@ class ClassElement extends Element
     {
         $name = $this->reflection->getName();
 
-        $title = str_replace('\\', '\\\\', $name);
+        $nameArr = explode('\\', $name);
+        $title = end($nameArr); //str_replace('\\', '\\\\', $name);
         //$title = $name;
 
         $string = str_repeat('-', strlen($title)) . "\n";

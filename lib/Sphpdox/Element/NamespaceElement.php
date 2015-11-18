@@ -116,6 +116,8 @@ class NamespaceElement extends Element
         $index = $target . DIRECTORY_SEPARATOR . 'index.rst';
 
         $title = str_replace('\\', '\\\\', $this->reflection->getName());
+        $titleArr = explode('\\\\', $title);
+        $title = end($titleArr);
         if (isset($options['title'])) {
             $title = $options['title'];
         }

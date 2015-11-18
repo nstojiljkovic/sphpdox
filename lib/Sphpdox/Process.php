@@ -14,6 +14,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use \InvalidArgumentException;
+use TokenReflection\Php\ReflectionClass;
+use TokenReflection\ReflectionNamespace;
 
 class Process extends Command
 {
@@ -161,7 +163,21 @@ class Process extends Command
 
             $elements[$n] = $element;
         }
-
+        foreach ($elements as $n => $element) {
+            /** @var $element NamespaceElement */
+            $nArr = explode('\\', $n);
+            while (($end = array_pop($nArr))) {
+                $nD = implode('\\', $nArr);
+                if ($nD && !array_key_exists($nD, $elements)) {
+                    $reflection = new ReflectionNamespace($nD, $broker);
+                    $newElement = new NamespaceElement($reflection, $element->getNamespaceElement());
+                    $newElement->buildClasses($out, $output);
+                    $elements[$nD] = $newElement;
+                    $output->writeln(json_encode($nArr));
+                }
+            }
+        }
+        ksort($elements);
         unset($filtered);
 
         foreach ($elements as $n => $element) {
