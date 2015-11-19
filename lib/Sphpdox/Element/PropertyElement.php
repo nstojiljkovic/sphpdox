@@ -66,7 +66,7 @@ class PropertyElement extends Element
 
         if (count($parts) >= 2) {
             if ($parts[1]) {
-                return $parts[1];
+                return str_replace('\\', '\\\\', $parts[1]);
             }
         }
     }

@@ -129,24 +129,28 @@ class NamespaceElement extends Element
         $template .= str_repeat($this->titles[$depth], strlen($title)) . "\n\n";
         $template .= $this->getNamespaceElement();
 
+        $template .= ".. _" . strtolower(implode('_', $titleArr)) . ":\n\n";
+
         $template .= ".. toctree::\n\n";
 
+        $tocContent = array();
         foreach ($built_iterator as $file) {
             if ($file->isDot()) continue;
             if ($file->isFile() && !$file->getExtension() == 'rst') continue;
             if ($file->isFile() && substr($file->getBaseName(), 0, 1) == '.') continue;
             if ($file->getBaseName() == 'index.rst') continue;
 
-            $template .= '   ' . pathinfo($file->getPathName(), PATHINFO_FILENAME);
+            $itemTemplate = '   ' . pathinfo($file->getPathName(), PATHINFO_FILENAME);
 
             if ($file->isDir()) {
-                $template .= '/index';
+                $itemTemplate .= '/index';
             }
 
-            $template .= "\n";
+            $tocContent[$file->getFilename()] = $itemTemplate;
         }
 
-        file_put_contents($index, $template);
+        ksort($tocContent);
+        file_put_contents($index, $template . implode("\n", $tocContent));
     }
 
     public function getNamespaceElement()

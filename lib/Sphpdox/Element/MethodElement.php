@@ -89,7 +89,7 @@ class MethodElement extends Element
             $string = '';
 
             if ($parameter['hint_type']) {
-                $string .= $parameter['hint_type'] . ' ';
+                $string .= str_replace('\\', '\\\\', $parameter['hint_type']) . ' ';
             }
 
             $string .= '$' . $name;
@@ -118,7 +118,7 @@ class MethodElement extends Element
 
         foreach ($this->getParameterInfo() as $name => $parameter) {
             if ($parameter['type']) {
-                $strings[] = ':type $' . $name . ': ' . $parameter['type'];
+                $strings[] = ':type $' . $name . ': ' . str_replace('\\', '\\\\', $parameter['type']);
             }
 
             $string = ':param $' . $name . ':';
@@ -160,7 +160,7 @@ class MethodElement extends Element
 
             return sprintf(
                 ':returns: %s%s',
-                $type ?: 'unknown',
+                str_replace('\\', '\\\\', $type) ?: 'unknown',
                 $comment ? ' ' . $comment : ''
             );
         }

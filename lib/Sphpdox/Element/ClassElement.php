@@ -51,14 +51,16 @@ class ClassElement extends Element
         $name = $this->reflection->getName();
 
         $nameArr = explode('\\', $name);
-        $title = end($nameArr); //str_replace('\\', '\\\\', $name);
-        //$title = $name;
+        $title = end($nameArr);
+        //$title = str_replace('\\', '\\\\', $name);
 
         $string = str_repeat('-', strlen($title)) . "\n";
         $string .= $title . "\n";
         $string .= str_repeat('-', strlen($title)) . "\n\n";
         $string .= $this->getNamespaceElement();
-        
+
+        $string .= ".. _" . strtolower(implode('_', $nameArr)) . ":\n\n";
+
         if ($this->reflection->isInterface()){
         	$string .= '.. php:interface:: ' ;
         } elseif ($this->reflection->isTrait()){

@@ -173,7 +173,6 @@ class Process extends Command
                     $newElement = new NamespaceElement($reflection, $element->getNamespaceElement());
                     $newElement->buildClasses($out, $output);
                     $elements[$nD] = $newElement;
-                    $output->writeln(json_encode($nArr));
                 }
             }
         }
